@@ -1,8 +1,8 @@
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree
 
 
 def load_xml(filename):
-    return ET.parse(filename)
+    return xml.etree.ElementTree.parse(filename).getroot()
 
 
 def write_xml(filename, data):

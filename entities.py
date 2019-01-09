@@ -1,4 +1,6 @@
 import pygame
+from xml_utils import load_xml, write_xml
+
 
 class GameObject:
     def __init__(self, x, y, w, h, image):
@@ -17,9 +19,11 @@ class GameObject:
 
 
 class Entity(GameObject):
-    def __init__(self, x, y, w, h, v, image):
-        GameObject.__init__(self, x, y, w, h, image)
-        self.v = v
+    def __init__(self, x, y, xml_data):
+        self.xml_data = xml_data
+        GameObject.__init__(self, x, y, int(xml_data.find('width').text),
+                            int(xml_data.find('height').text), xml_data.find('image').text)
+        self.v = int(xml_data.v)
 
     def move(self, dx, dy):
         self.x += self.v * dx
@@ -27,8 +31,8 @@ class Entity(GameObject):
 
 
 class Player(Entity):
-    def __init__(self, x, y, w, h, v, image):
-        Entity.__init__(self, x, y, w, h, v, image)
+    def __init__(self, x, y, xml_data):
+        Entity.__init__(self, x, y, xml_data)
 
     # def use_sword(self):
 
@@ -36,6 +40,7 @@ class Player(Entity):
 
 
 class Enemy(Entity):
-    def __init__(self, xml_file):
-        Entity.__init__(self, x, y, v, image)
+    def __init__(self, x, y, xml_data):
+        Entity.__init__(self, x, y, xml_data)
+
 

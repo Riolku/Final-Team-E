@@ -1,1 +1,7 @@
 TILE_SIZE = 5
+
+FPS = 50
+
+SCREEN_SIZE = (720, 720)
+
+TITLE = "Team E Game"
