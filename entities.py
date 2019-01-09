@@ -1,10 +1,12 @@
 import pygame
 
 class GameObject:
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, w, h, image):
         self.x = x
         self.y = y
-        self.image = image
+        self.width = w
+        self.height = h
+        self.image = pygame.transform.scale(image, (w, h))
 
     def draw(self):
         pygame.display.get_surface().blit(self.image, (self.x, self.y))
@@ -15,8 +17,8 @@ class GameObject:
 
 
 class Entity(GameObject):
-    def __init__(self, x, y, v, image):
-        GameObject.__init__(self, x, y, image)
+    def __init__(self, x, y, w, h, v, image):
+        GameObject.__init__(self, x, y, w, h, image)
         self.v = v
 
     def move(self, dx, dy):
@@ -25,8 +27,8 @@ class Entity(GameObject):
 
 
 class Player(Entity):
-    def __init__(self, x, y, v, image):
-        Entity.__init__(self, x, y, v, image)
+    def __init__(self, x, y, w, h, v, image):
+        Entity.__init__(self, x, y, w, h, v, image)
 
     # def use_sword(self):
 
@@ -34,6 +36,6 @@ class Player(Entity):
 
 
 class Enemy(Entity):
-    def __init__(self, x, y, v, image):
+    def __init__(self, xml_file):
         Entity.__init__(self, x, y, v, image)
 
