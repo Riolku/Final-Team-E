@@ -5,3 +5,5 @@ FPS = 50
 SCREEN_SIZE = (720, 720)
 
 TITLE = "Team E Game"
+
+SWORD_TIME = 10

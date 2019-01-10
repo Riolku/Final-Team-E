@@ -1,6 +1,7 @@
 import pygame
 from constants import SCREEN_SIZE, TITLE
 
+
 class GameDriver:
     def __init__(self):
         self.events = []
