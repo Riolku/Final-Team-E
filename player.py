@@ -1,22 +1,27 @@
+import pygame
 from entity import Entity
 from weapons import Weapon
 
 
 class Player(Entity):
-    def __init__(self, x, y, xml_data):
-        Entity.__init__(self, x, y, xml_data)
-        self.sword = PlayerSword(self, xml_data.find('sword'))
-        self.bow = PlayerBow(self, xml_data.find('bow'))
+    def __init__(self, x, y, xml_data, driver):
+        Entity.__init__(self, x, y, xml_data, driver)
+        # self.sword = PlayerSword(self, xml_data.find('sword'), driver)
+        # self.bow = PlayerBow(self, xml_data.find('bow'))
 
     def use_sword(self):
         self.sword.use()
 
     # def use_bow(self):
+    def tick(self):
+        for ev in self.driver.events:
+            if ev.type == pygame.K_w:
+                self.move(0, 1)
 
 
 class PlayerSword(Weapon):
-    def __init__(self, wielder : Player, xml_data):
-        Weapon.__init__(self, xml_data)
+    def __init__(self, wielder : Player, xml_data, driver):
+        Weapon.__init__(self, xml_data, driver)
         self.wielder = wielder
 
     def use(self) -> None:
@@ -35,8 +40,8 @@ class PlayerSword(Weapon):
 
 
 class PlayerBow(Weapon):
-    def __init__(self, wielder : Player, xml_data):
-        Weapon.__init__(self, xml_data)
+    def __init__(self, wielder : Player, xml_data, driver):
+        Weapon.__init__(self, xml_data, driver)
         self.wielder = wielder
 
     # def use(self) -> None:

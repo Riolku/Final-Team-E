@@ -2,10 +2,10 @@ from game_object import GameObject
 
 
 class Entity(GameObject):
-    def __init__(self, x, y, xml_data):
+    def __init__(self, x, y, xml_data, driver):
         self.xml_data = xml_data
         GameObject.__init__(self, x, y, int(xml_data.get('width')),
-                            int(xml_data.get('height')), xml_data.get('img'))
+                            int(xml_data.get('height')), xml_data.get('img'), driver)
         self.hp = int(xml_data.get('health'))
         self.v = int(xml_data.get('speed'))
 
@@ -15,3 +15,6 @@ class Entity(GameObject):
 
     def take_damage(self, dmg : int) -> None:
         self.hp -= dmg
+
+    def tick(self) -> None:
+        raise NotImplementedError

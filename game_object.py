@@ -2,11 +2,12 @@ import pygame
 
 
 class GameObject:
-    def __init__(self, x, y, w, h, image):
+    def __init__(self, x, y, w, h, image_path, driver):
         self.x = x
         self.y = y
         self.width = w
         self.height = h
+        image = pygame.image.load(image_path)
         orig_image = pygame.transform.scale(image, (w, h))
         self.images = [
             orig_image,
@@ -17,6 +18,7 @@ class GameObject:
         self.image = orig_image
         self.direction = (1, 0)
         self.active = False
+        self.driver = driver
 
     def draw(self) -> None:
         pygame.display.get_surface().blit(self.image, (self.x, self.y))
@@ -61,3 +63,6 @@ class GameObject:
 
     def deactivate(self) -> None:
         self.active = False
+
+    def tick(self) -> None:
+        pass
