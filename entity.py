@@ -1,4 +1,4 @@
-from objects import GameObject, PlayerSword
+from game_object import GameObject
 
 
 class Entity(GameObject):
@@ -15,22 +15,3 @@ class Entity(GameObject):
 
     def take_damage(self, dmg : int) -> None:
         self.hp -= dmg
-
-
-class Player(Entity):
-    def __init__(self, x, y, xml_data):
-        Entity.__init__(self, x, y, xml_data)
-        self.sword = PlayerSword()
-
-    # def use_sword(self):
-
-    # def use_bow(self):
-
-
-class Enemy(Entity):
-    def __init__(self, x, y, xml_data):
-        self.damage = int(xml_data.get("dmg"))
-        Entity.__init__(self, x, y, xml_data)
-
-    def deal_damage(self, other : Player) -> None:
-        other.take_damage(self.damage)

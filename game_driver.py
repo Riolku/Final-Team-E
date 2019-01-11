@@ -8,9 +8,9 @@ class GameDriver:
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(TITLE)
 
-    def add_event(self, ev):
+    def add_event(self, ev) -> None:
         self.events.append(ev)
 
-    def clear_events(self):
+    def clear_events(self) -> None:
         self.events.clear()
 

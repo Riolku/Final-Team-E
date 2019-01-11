@@ -2,6 +2,8 @@ import pygame
 from game_driver import GameDriver
 from constants import FPS
 
+pygame.init()
+
 driver = GameDriver()
 
 run = True
@@ -13,3 +15,4 @@ while run:
             run = False
             break
         driver.add_event(event)
+pygame.quit()

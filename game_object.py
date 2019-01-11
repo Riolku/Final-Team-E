@@ -1,5 +1,4 @@
 import pygame
-from entities import Entity, Player
 
 
 class GameObject:
@@ -62,35 +61,3 @@ class GameObject:
 
     def deactivate(self) -> None:
         self.active = False
-
-
-class Weapon(GameObject):
-    def __init__(self, xml_data):
-        self.damage = int(xml_data.get('dmg'))
-        GameObject.__init__(self, 0, 0, int(xml_data.get('width')), int(xml_data.get('height')), xml_data.get('img'))
-
-    def deal_damage(self, target : Entity) -> None:
-        target.hp -= self.damage
-
-    def use(self):
-        raise NotImplementedError
-
-
-class PlayerSword(Weapon):
-    def __init__(self, wielder : Player, xml_data):
-        Weapon.__init__(self, xml_data)
-        self.wielder = wielder
-
-    def use(self) -> None:
-        self.set_direction(self.wielder.direction)
-        midx = self.wielder.left_edge() + self.wielder.width // 2
-        midy = self.wielder.top_edge() + self.wielder.height // 2
-        if self.direction == (1, 0):
-            self.set_pos(self.wielder.right_edge(), midy + self.height // 2)
-        elif self.direction == (0, -1):
-            self.set_pos(midx - self.width // 2, self.wielder.bottom_edge())
-        elif self.direction == (-1, 0):
-            self.set_pos(self.wielder.left_edge() + self.width, midy - self.height // 2)
-        else:
-            self.set_pos(midx - self.width, self.wielder.top_edge() - self.height)
-        self.activate()
