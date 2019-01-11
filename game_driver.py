@@ -1,15 +1,16 @@
 import pygame
-from constants import SCREEN_SIZE, TITLE
+from constants import SCREEN_SIZE, TITLE, REPEAT_DELAY, REPEAT_INTERVAL
 from main_driver import MainDriver
 
 class GameDriver:
     def __init__(self):
+        pygame.key.set_repeat(REPEAT_DELAY, REPEAT_INTERVAL)
         # TODO: Start in init state
         self.state = "main"
         self.events = []
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(TITLE)
-        self.main_driver = MainDriver()
+        self.main_driver = MainDriver(self.screen)
 
     def add_event(self, ev) -> None:
         self.events.append(ev)

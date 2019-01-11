@@ -15,8 +15,19 @@ class Player(Entity):
     # def use_bow(self):
     def tick(self):
         for ev in self.driver.events:
-            if ev.type == pygame.K_w:
-                self.move(0, 1)
+            if ev.type == pygame.KEYDOWN:
+                if ev.key == pygame.K_w:
+                    self.move(0, -1)
+                    self.set_direction((0, -1))
+                elif ev.key == pygame.K_a:
+                    self.move(-1, 0)
+                    self.set_direction((-1, 0))
+                elif ev.key == pygame.K_d:
+                    self.move(1, 0)
+                    self.set_direction((1, 0))
+                elif ev.key == pygame.K_s:
+                    self.move(0, 1)
+                    self.set_direction((0, 1))
 
 
 class PlayerSword(Weapon):

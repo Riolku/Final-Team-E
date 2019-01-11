@@ -1,4 +1,5 @@
 import pygame
+from constants import TILE_SIZE
 
 
 class GameObject:
@@ -8,20 +9,20 @@ class GameObject:
         self.width = w
         self.height = h
         image = pygame.image.load(image_path)
-        orig_image = pygame.transform.scale(image, (w, h))
+        orig_image = image # pygame.transform.scale(image, (w, h))
         self.images = [
+            pygame.transform.rotate(orig_image, 270),
             orig_image,
             pygame.transform.rotate(orig_image, 90),
-            pygame.transform.rotate(orig_image, 180),
-            pygame.transform.rotate(orig_image, 270)
+            pygame.transform.rotate(orig_image, 180)
         ]
         self.image = orig_image
-        self.direction = (1, 0)
+        self.direction = (0, -1)
         self.active = False
         self.driver = driver
 
     def draw(self) -> None:
-        pygame.display.get_surface().blit(self.image, (self.x, self.y))
+        self.driver.screen.blit(self.image, (self.x * TILE_SIZE, self.y * TILE_SIZE))
 
     def set_pos(self, x, y) -> None:
         self.x = x

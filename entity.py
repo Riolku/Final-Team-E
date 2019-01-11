@@ -8,6 +8,7 @@ class Entity(GameObject):
                             int(xml_data.get('height')), xml_data.get('img'), driver)
         self.hp = int(xml_data.get('health'))
         self.v = int(xml_data.get('speed'))
+        self.activate()
 
     def move(self, dx, dy) -> None:
         self.x += self.v * dx
