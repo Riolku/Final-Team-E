@@ -17,9 +17,9 @@ class MainDriver:
             ]
             for _ in range(self.grid_height)
         ]
-        self.objects = [
-            Player(self.grid_width // 2, self.grid_height // 2, load_xml("resources/xml/player.xml"), self)
-        ]
+        self.objects = []
+        p = Player(self.grid_width // 2, self.grid_height // 2, load_xml("resources/xml/player.xml"), self)
+        self.objects.append(p)
 
     def add_event(self, ev) -> None:
         self.events.append(ev)
