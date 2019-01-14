@@ -6,7 +6,7 @@ from weapons import Weapon
 class Player(Entity):
     def __init__(self, x, y, xml_data, driver):
         Entity.__init__(self, x, y, xml_data, driver)
-        # self.sword = PlayerSword(self, xml_data.find('sword'), driver)
+        self.sword = PlayerSword(self, xml_data.find('sword'), driver)
         # self.bow = PlayerBow(self, xml_data.find('bow'))
 
     def use_sword(self):

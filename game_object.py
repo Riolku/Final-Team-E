@@ -9,7 +9,7 @@ class GameObject:
         self.width = w
         self.height = h
         image = pygame.image.load(image_path)
-        orig_image = image # pygame.transform.scale(image, (w, h))
+        orig_image = pygame.transform.scale(image, (w * TILE_SIZE, h * TILE_SIZE))
         self.images = [
             pygame.transform.rotate(orig_image, 270),
             orig_image,

@@ -29,6 +29,21 @@ class MainDriver:
 
     def tick(self) -> None:
         for o in self.objects:
+            old_x = o.x
+            old_y = o.y
             o.tick()
+            if o.x < 0:
+                o.set_pos(0, o.y)
+            if o.x >= self.grid_width:
+                o.set_pos(self.grid_width - 1, o.y)
+            if o.y < 0:
+                o.set_pos(o.x, 0)
+            if o.y >= self.grid_height:
+                o.set_pos(o.x, self.grid_height - 1)
+
+            if self.grid[o.y][o.x] is None:
+                self.grid[o.y][o.x] = o
+                self.grid[old_y][old_x] = None
+
             if o.active:
                 o.draw()

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <player width="3" height="3" img="resources/graphics/player/idle.png" health="100" speed="1">
+    <sword width="1" height="4" img="resources/graphics/player/sword.png" dmg="5">
 
+    </sword>
 </player>
