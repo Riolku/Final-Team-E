@@ -28,6 +28,8 @@ class Player(Entity):
                 elif ev.key == pygame.K_s:
                     self.move(0, 1)
                     self.set_direction((0, 1))
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+                self.use_sword()
 
 
 class PlayerSword(Weapon):
