@@ -1,17 +1,19 @@
 import pygame
 from entity import Entity
 from weapons import Weapon
+from constants import FPS
 
 
 class Player(Entity):
-    def __init__(self, x, y, xml_data, driver):
+    def __init__(self, x : int, y : int, xml_data, driver):
         Entity.__init__(self, x, y, xml_data, driver)
         self.sword = PlayerSword(self, xml_data.find('sword'), driver)
         # self.bow = PlayerBow(self, xml_data.find('bow'))
         self.driver.objects.append(self.sword)
+        self.sword_tick = 0
 
     def use_sword(self):
-        self.sword.use()
+        self.sword_tick = FPS // 3
 
     # def use_bow(self):
     def tick(self):
@@ -31,7 +33,16 @@ class Player(Entity):
                     self.set_direction((0, 1))
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 self.use_sword()
+        if self.sword_tick:
+            self.sword_tick -= 1
+            if self.sword_tick == 0:
+                self.sword.deactivate()
+            else:
+                self.sword.use()
 
+    def move(self, dx : int, dy : int) -> None:
+        if not self.sword_tick:
+            Entity.move(self, dx, dy)
 
 class PlayerSword(Weapon):
     def __init__(self, wielder : Player, xml_data, driver):

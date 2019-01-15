@@ -3,7 +3,7 @@ from constants import TILE_SIZE
 
 
 class GameObject:
-    def __init__(self, x, y, w, h, image_path, driver):
+    def __init__(self, x : int, y : int, w : int, h : int, image_path : str, driver):
         self.x = x
         self.y = y
         self.width = w
@@ -24,11 +24,11 @@ class GameObject:
     def draw(self) -> None:
         self.driver.screen.blit(self.image, (self.x * TILE_SIZE, self.y * TILE_SIZE))
 
-    def set_pos(self, x, y) -> None:
+    def set_pos(self, x : int, y : int) -> None:
         self.x = x
         self.y = y
 
-    def set_direction(self, new_direction) -> None:
+    def set_direction(self, new_direction : tuple) -> None:
         self.direction = new_direction
         if self.direction == (1, 0):
             self.image = self.images[0]

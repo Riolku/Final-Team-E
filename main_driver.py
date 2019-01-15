@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_SIZE, TILE_SIZE
+from constants import SCREEN_SIZE, TILE_SIZE, TILEX_BUFFER, TILEY_BUFFER
 from player import Player
 from xml_utils import load_xml, write_xml
 
@@ -9,8 +9,8 @@ class MainDriver:
         pygame.key.set_repeat(1, 1)
         self.screen = screen
         self.events = []
-        self.grid_width = SCREEN_SIZE[0] // TILE_SIZE
-        self.grid_height = SCREEN_SIZE[1] // TILE_SIZE
+        self.grid_width = SCREEN_SIZE[0] // TILE_SIZE - TILEX_BUFFER
+        self.grid_height = SCREEN_SIZE[1] // TILE_SIZE - TILEY_BUFFER
         self.grid = [
             [
                 None for _ in range(self.grid_width)

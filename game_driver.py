@@ -21,6 +21,6 @@ class GameDriver:
         self.events.clear()
         self.main_driver.clear_events()
 
-    def tick(self):
+    def tick(self) -> None:
         if self.state == "main":
             self.main_driver.tick()

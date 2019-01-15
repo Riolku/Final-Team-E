@@ -2,7 +2,7 @@ from game_object import GameObject
 
 
 class Entity(GameObject):
-    def __init__(self, x, y, xml_data, driver):
+    def __init__(self, x : int, y : int, xml_data, driver):
         self.xml_data = xml_data
         GameObject.__init__(self, x, y, int(xml_data.get('width')),
                             int(xml_data.get('height')), xml_data.get('img'), driver)
@@ -10,7 +10,7 @@ class Entity(GameObject):
         self.v = int(xml_data.get('speed'))
         self.activate()
 
-    def move(self, dx, dy) -> None:
+    def move(self, dx: int, dy: int) -> None:
         self.x += self.v * dx
         self.y += self.v * dy
 
