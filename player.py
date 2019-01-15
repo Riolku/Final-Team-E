@@ -42,8 +42,6 @@ class PlayerSword(Weapon):
         self.set_direction(self.wielder.direction)
         midx = self.wielder.left_edge() + self.wielder.width // 2
         midy = self.wielder.top_edge() + self.wielder.height // 2
-        print(self.wielder.x, self.wielder.y)
-        print(self.wielder.right_edge())
         if self.direction == (1, 0):
             self.set_pos(self.wielder.right_edge(), midy - self.width // 2)
         elif self.direction == (0, -1):
