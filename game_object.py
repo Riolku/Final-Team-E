@@ -22,7 +22,11 @@ class GameObject:
         self.driver = driver
 
     def draw(self) -> None:
-        self.driver.screen.blit(self.image, (self.x * TILE_SIZE, self.y * TILE_SIZE))
+        self.driver.screen.blit(
+            self.image,
+            ((self.x - self.driver.x_offset) * TILE_SIZE,
+             (self.y - self.driver.y_offset)* TILE_SIZE)
+        )
 
     def set_pos(self, x : int, y : int) -> None:
         self.x = x
