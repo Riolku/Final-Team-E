@@ -3,7 +3,7 @@ from constants import TILE_SIZE
 
 
 class GameObject:
-    def __init__(self, x : int, y : int, w : int, h : int, image_path : str, driver, image = None):
+    def __init__(self, x : int, y : int, w : int, h : int, driver, image_path : str = "", image = None, active = False):
         self.x = x
         self.y = y
         self.width = w
@@ -19,15 +19,21 @@ class GameObject:
         ]
         self.image = orig_image
         self.direction = (0, -1)
-        self.active = False
+        self.active = active
         self.driver = driver
 
+    def onscreen(self) -> bool:
+        x = self.x - self.driver.x_offset
+        y = self.y - self.driver.y_offset
+        x_in = 0 <= x < self.driver.screen_width or 0 <= x + self.width < self.driver.screen_width
+        y_in = 0 <= y < self.driver.screen_height or 0 <= y + self.width < self.driver.screen_height
+        return x_in and y_in
+
     def draw(self) -> None:
-        self.driver.screen.blit(
-            self.image,
-            ((self.x - self.driver.x_offset) * TILE_SIZE,
-             (self.y - self.driver.y_offset)* TILE_SIZE)
-        )
+        x = self.x - self.driver.x_offset
+        y = self.y - self.driver.y_offset
+        if self.onscreen():
+            self.driver.screen.blit(self.image, (x * TILE_SIZE, y * TILE_SIZE))
 
     def set_pos(self, x : int, y : int) -> None:
         self.x = x

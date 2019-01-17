@@ -5,7 +5,8 @@ class Entity(GameObject):
     def __init__(self, x : int, y : int, xml_data, driver):
         self.xml_data = xml_data
         GameObject.__init__(self, x, y, int(xml_data.get('width')),
-                            int(xml_data.get('height')), xml_data.get('img'), driver)
+                            int(xml_data.get('height')), driver, image_path = xml_data.get('img')
+                            )
         self.hp = int(xml_data.get('health'))
         self.v = int(xml_data.get('speed'))
         self.activate()

@@ -43,10 +43,6 @@ class Player(Entity):
     def move(self, dx : int, dy : int) -> None:
         if not self.sword_tick:
             Entity.move(self, dx, dy)
-            if 0 <= self.x < self.driver.map_width:
-                self.driver.x_offset += dx * self.v
-            if 0 <= self.y < self.driver.map_height:
-                self.driver.y_offset += dy * self.v
 
 
 class PlayerSword(Weapon):
