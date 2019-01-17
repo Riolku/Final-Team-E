@@ -3,12 +3,13 @@ from constants import TILE_SIZE
 
 
 class GameObject:
-    def __init__(self, x : int, y : int, w : int, h : int, image_path : str, driver):
+    def __init__(self, x : int, y : int, w : int, h : int, image_path : str, driver, image = None):
         self.x = x
         self.y = y
         self.width = w
         self.height = h
-        image = pygame.image.load(image_path)
+        if image is None:
+            image = pygame.image.load(image_path)
         orig_image = pygame.transform.scale(image, (w * TILE_SIZE, h * TILE_SIZE))
         self.images = [
             pygame.transform.rotate(orig_image, 270),

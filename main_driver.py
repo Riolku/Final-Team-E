@@ -1,6 +1,7 @@
 import pygame
 from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT
 from player import Player
+from game_object import GameObject
 from xml_utils import load_xml
 
 
@@ -15,18 +16,16 @@ class MainDriver:
         self.screen_height = SCREEN_SIZE[1] // TILE_SIZE
         background = pygame.image.load("resources/graphics/forest.png")
         self.background = pygame.transform.scale(background, SCREEN_SIZE)
-        self.map = [
-            [
-                None for _ in range(self.map_width)
-            ]
-            for _ in range(self.map_height)
-        ]
         self.rock = pygame.image.load("resources/graphics/rock.png")
         self.x_offset = (MAP_WIDTH - 1) * self.screen_width // 2
         self.y_offset = (MAP_HEIGHT - 1) * self.screen_height // 2
         self.objects = []
         p = Player(self.map_width // 2, self.map_height // 2, load_xml("resources/xml/player.xml"), self)
         self.objects.append(p)
+
+        rock_xml = load_xml("resources/xml/rock.xml")
+        for x in range(self.screen_width, self.screen_width * (MAP_WIDTH - 1), rock_xml['width']):
+            self.objects.append(GameObject())
 
     def add_event(self, ev) -> None:
         self.events.append(ev)
@@ -45,21 +44,15 @@ class MainDriver:
                     self.screen.blit(self.background, (x * TILE_SIZE, y * TILE_SIZE))
 
         for o in self.objects:
+            if not o.active:
+                continue
             old_x = o.x
             old_y = o.y
             o.tick()
-            if o.x < 0:
-                o.set_pos(0, o.y)
-            if o.x >= self.map_width:
-                o.set_pos(self.map_width - 1, o.y)
-            if o.y < 0:
-                o.set_pos(o.x, 0)
-            if o.y >= self.map_height:
-                o.set_pos(o.x, self.map_height - 1)
-
-            if self.map[o.y][o.x] is None:
-                self.map[o.y][o.x] = o
-                self.map[old_y][old_x] = None
+            for o2 in self.objects:
+                if o2.active and o.collides(o2):
+                    o.set_pos(old_x, old_y)
+                    break
 
             if o.active:
                 o.draw()
