@@ -21,6 +21,7 @@ class MainDriver:
             ]
             for _ in range(self.map_height)
         ]
+        self.rock = pygame.image.load("resources/graphics/rock.png")
         self.x_offset = (MAP_WIDTH - 1) * self.screen_width // 2
         self.y_offset = (MAP_HEIGHT - 1) * self.screen_height // 2
         self.objects = []
@@ -36,15 +37,12 @@ class MainDriver:
     def tick(self) -> None:
         for tilex in range(MAP_WIDTH):
             for tiley in range(MAP_HEIGHT):
-                x = self.screen_width * tilex - self.x_offset
-                y = self.screen_height * tiley - self.y_offset
+                x = (self.screen_width * tilex - self.x_offset)
+                y = (self.screen_height * tiley - self.y_offset)
                 if (0 <= x < self.screen_width or 0 <= x + self.screen_width < self.screen_width) \
                     and \
                     (0 <= y < self.screen_height or 0 <= y + self.screen_height < self.screen_height):
-                    self.screen.blit(self.background, (
-                        self.screen_width * tilex - self.x_offset,
-                        self.screen_height * tiley - self.y_offset
-                    ))
+                    self.screen.blit(self.background, (x * TILE_SIZE, y * TILE_SIZE))
 
         for o in self.objects:
             old_x = o.x
