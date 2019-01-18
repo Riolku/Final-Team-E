@@ -1,6 +1,6 @@
 TILE_SIZE = 5
 
-FPS = 50
+FPS = 100
 
 SCREEN_SIZE = (720, 720)
 

@@ -5,7 +5,7 @@ from constants import FPS
 
 
 class Player(Entity):
-    def __init__(self, x : int, y : int, xml_data, driver):
+    def __init__(self, x : float, y : float, xml_data, driver):
         Entity.__init__(self, x, y, xml_data, driver)
         self.sword = PlayerSword(self, xml_data.find('sword'), driver)
         # self.bow = PlayerBow(self, xml_data.find('bow'))
@@ -17,6 +17,8 @@ class Player(Entity):
 
     # def use_bow(self):
     def tick(self):
+        Entity.tick(self)
+
         for ev in self.driver.events:
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_w:
@@ -33,6 +35,7 @@ class Player(Entity):
                     self.set_direction((0, 1))
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 self.use_sword()
+
         if self.sword_tick:
             self.sword_tick -= 1
             if self.sword_tick == 0:
@@ -40,7 +43,7 @@ class Player(Entity):
             else:
                 self.sword.use()
 
-    def move(self, dx : int, dy : int) -> None:
+    def move(self, dx : float, dy : float) -> None:
         if not self.sword_tick:
             Entity.move(self, dx, dy)
 

@@ -3,7 +3,7 @@ from constants import TILE_SIZE
 
 
 class GameObject:
-    def __init__(self, x : int, y : int, w : int, h : int, driver, image_path : str = "", image = None, active = False):
+    def __init__(self, x : float, y : float, w : int, h : int, driver, image_path : str = "", image = None, active = False):
         self.x = x
         self.y = y
         self.width = w
@@ -35,7 +35,7 @@ class GameObject:
         if self.onscreen():
             self.driver.screen.blit(self.image, (x * TILE_SIZE, y * TILE_SIZE))
 
-    def set_pos(self, x : int, y : int) -> None:
+    def set_pos(self, x : float, y : float) -> None:
         self.x = x
         self.y = y
 
@@ -50,16 +50,16 @@ class GameObject:
         else:
             self.image = self.images[3]
 
-    def left_edge(self) -> int:
+    def left_edge(self) -> float:
         return self.x
 
-    def right_edge(self) -> int:
+    def right_edge(self) -> float:
         return self.x + self.width
 
-    def top_edge(self) -> int:
+    def top_edge(self) -> float:
         return self.y
 
-    def bottom_edge(self) -> int:
+    def bottom_edge(self) -> float:
         return self.y + self.height
 
     def inside(self, point : tuple) -> bool:

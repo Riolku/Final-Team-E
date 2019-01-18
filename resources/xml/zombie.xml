@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<zombie width="10" height="10" img="resources/graphics/player/idle.png" health="100" speed="150" dmg="5">
+
+</zombie>
