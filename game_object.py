@@ -54,21 +54,30 @@ class GameObject:
         return self.x
 
     def right_edge(self) -> float:
+        if self.direction[0]:
+            # They are facing left or right
+            return self.x + self.height
         return self.x + self.width
 
     def top_edge(self) -> float:
         return self.y
 
     def bottom_edge(self) -> float:
+        if self.direction[1]:
+            # They are facing left or right
+            return self.x + self.height
         return self.y + self.height
 
     def inside(self, point : tuple) -> bool:
         return self.x <= point[0] <= self.x + self.width and self.y <= point[1] <= self.y + self.height
 
     def collides(self, other) -> bool:
-        return any(self.inside((other.x + other.width * cw, other.y + other.height * ch))
-                   for cw in range(2)
-                   for ch in range(2))
+        return any(self.inside(pt) for pt in [
+            (other.bottom_edge(), other.right_edge()),
+            (other.bottom_edge(), other.left_edge()),
+            (other.top_edge(), other.right_edge()),
+            (other.top_edge(), other.left_edge())
+        ])
 
     def activate(self) -> None:
         self.active = True

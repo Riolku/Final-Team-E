@@ -17,11 +17,14 @@ class Entity(GameObject):
         self.x += self.v * dx / FPS
         self.y += self.v * dy / FPS
 
-    def take_damage(self, dmg : int) -> None:
+    def take_damage(self, dmg : int) -> bool:
         # Subtract from HP if they aren't currently invincible
         if not self.invincible_timer:
+            print("Ow")
             self.hp -= dmg
             self.invincible_timer = FPS
+            return True
+        return False
 
     def tick(self) -> None:
         # Subtract from their invincibility timer

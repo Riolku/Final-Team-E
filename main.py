@@ -1,12 +1,6 @@
 import pygame
 from game_driver import GameDriver
 from constants import FPS
-import atexit, traceback
-
-
-@atexit.register
-def when_die():
-    traceback.print_exc()
 
 pygame.init()
 

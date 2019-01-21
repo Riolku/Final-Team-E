@@ -8,14 +8,12 @@ class Player(Entity):
     def __init__(self, x : float, y : float, xml_data, driver):
         Entity.__init__(self, x, y, xml_data, driver)
         self.sword = PlayerSword(self, xml_data.find('sword'), driver)
-        # self.bow = PlayerBow(self, xml_data.find('bow'))
         self.driver.objects.append(self.sword)
         self.sword_tick = 0
 
     def use_sword(self):
         self.sword_tick = FPS // 3
 
-    # def use_bow(self):
     def tick(self):
         Entity.tick(self)
 
@@ -66,11 +64,3 @@ class PlayerSword(Weapon):
         else:
             self.set_pos(midx - self.width // 2, self.wielder.bottom_edge())
         self.activate()
-
-
-class PlayerBow(Weapon):
-    def __init__(self, wielder : Player, xml_data, driver):
-        Weapon.__init__(self, xml_data, driver)
-        self.wielder = wielder
-
-    # def use(self) -> None:

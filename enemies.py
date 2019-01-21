@@ -5,16 +5,20 @@ import math
 
 class Enemy(Entity):
     def __init__(self, x, y, xml_data, driver, image = None):
-        self.damage = int(xml_data.get("dmg"))
+        self.dmg = int(xml_data.get("dmg"))
         Entity.__init__(self, x, y, xml_data, driver, image = image)
         self.player = driver.player
         self.stun_time = 0
 
     def deal_damage(self) -> None:
-        self.player.take_damage(self.damage)
+        self.player.take_damage(self.dmgh)
 
     def tick(self) -> None:
         Entity.tick(self)
+
+        self.stun_time -= 1
+        if self.stun_time > 0:
+            return
 
         dx = self.player.x - self.x
         dy = self.player.y - self.y
@@ -26,10 +30,11 @@ class Enemy(Entity):
 
     def take_damage(self, dmg : int) -> None:
         # Call the super method
-        Entity.take_damage(self, dmg)
+        took_damage = Entity.take_damage(self, dmg)
 
-        # Set a stunned timer
-        self.stun_time = FPS
+        if took_damage:
+            # Set a stunned timer
+            self.stun_time = FPS
 
 
 class Zombie(Enemy):

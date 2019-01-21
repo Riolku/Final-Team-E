@@ -3,10 +3,10 @@
 import pygame
 from random import randint as rint
 from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT, FPS
-from player import Player
+from player import Player, PlayerSword
 from game_object import GameObject
 from xml_utils import load_xml
-from enemies import Zombie
+from enemies import Zombie, Enemy
 from entity import Entity
 
 
@@ -118,5 +118,11 @@ class MainDriver:
                     self.x_offset += dx
                     self.y_offset += dy
 
-            if o.onscreen():
+        for o in self.objects:
+            if isinstance(o, Enemy):
+                if (o.collides(self.player.sword) or self.player.sword.collides(o)) and self.player.sword.active:
+                    self.player.sword.deal_damage(o)
+
+            if o.active:
                 o.draw()
+
