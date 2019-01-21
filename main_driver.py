@@ -89,6 +89,8 @@ class MainDriver:
         e.activate()
         self.objects.append(e)
 
+
+
     def tick(self) -> None:
         self.spawn_enemies()
         for tilex in range(MAP_WIDTH):
