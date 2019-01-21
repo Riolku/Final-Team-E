@@ -1,6 +1,7 @@
 
 # import libraries
 import pygame
+import random
 from random import randint as rint
 from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT, FPS
 from player import Player
@@ -46,9 +47,11 @@ class MainDriver:
         rock_xml = load_xml("resources/xml/rock.xml")
         # rock sprite directory is set up
         rock = pygame.image.load("resources/graphics/rock.png")
+        # width of the rock
         w = int(rock_xml.get('width'))
+        # height of the rock
         h = int(rock_xml.get('height'))
-
+        # path to zombie image
         self.zombie_img = pygame.image.load("resources/graphics/enemies/zombie.png")
 
         for x in range(self.screen_width, self.screen_width * (MAP_WIDTH - 1), w):
@@ -73,7 +76,7 @@ class MainDriver:
         dice_roll = rint(1, 2 * FPS)
         if dice_roll != 1:
             return
-
+        # for testing purposes
         print("Enemy spawned")
         # Spawn an enemy
         x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
