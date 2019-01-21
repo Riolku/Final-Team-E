@@ -1,7 +1,6 @@
 
 # import libraries
 import pygame
-import random
 from random import randint as rint
 from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT, FPS
 from player import Player
@@ -53,11 +52,11 @@ class MainDriver:
         h = int(rock_xml.get('height'))
         # path to zombie image
         self.zombie_img = pygame.image.load("resources/graphics/enemies/zombie.png")
-
+        # makes rocks appear at a certain boundary on the top and bottom (x axis)
         for x in range(self.screen_width, self.screen_width * (MAP_WIDTH - 1), w):
             self.objects.append(GameObject(x, self.screen_height, w, h, self, image = rock, active = True))
             self.objects.append(GameObject(x, self.screen_height * (MAP_HEIGHT - 1), w, h, self, image = rock, active = True))
-
+        # makes rocks appear at a certain boundary on the left and right (y axis)
         for y in range(self.screen_height, self.screen_height * (MAP_HEIGHT - 1), h):
             self.objects.append(GameObject(self.screen_width, y, w, h, self, image = rock, active = True))
             self.objects.append(GameObject(self.screen_width * (MAP_WIDTH - 1), y, w, h, self, image = rock, active = True))
@@ -74,11 +73,12 @@ class MainDriver:
         # Roll a dice to see if enemy should spawn
         # Approximately 1 every 2 seconds
         dice_roll = rint(1, 2 * FPS)
+        # if dice roll is not equal to 1, end
         if dice_roll != 1:
             return
         # for testing purposes
         print("Enemy spawned")
-        # Spawn an enemy
+        # Spawn an enemy at random location
         x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
         y = rint(0, (MAP_HEIGHT - 1) * self.screen_height)
         e = Zombie(x, y, load_xml("resources/xml/zombie.xml"), self, image = self.zombie_img)
