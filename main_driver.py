@@ -93,14 +93,14 @@ class MainDriver:
             return
 
         # Spawn an enemy at random location
-        x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
-        y = rint(0, (MAP_HEIGHT - 1) * self.screen_height)
+        x = rint(2 * self.screen_width, (MAP_WIDTH - 2) * self.screen_width)
+        y = rint(2 * self.screen_height, (MAP_HEIGHT - 2) * self.screen_height)
         e = Zombie(x, y, self.zombie_xml, self, image = self.zombie_img)
         # Make sure they aren't on screen
         # If they were on screen, an enemy would just "pop" into existence
         while e.onscreen():
-            x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
-            y = rint(0, (MAP_HEIGHT - 1) * self.screen_height)
+            x = rint(MAP_WIDTH, (MAP_WIDTH - 2) * self.screen_width)
+            y = rint(MAP_HEIGHT, (MAP_HEIGHT - 2) * self.screen_height)
             e.set_pos(x, y)
         e.activate()
         self.objects.append(e)
