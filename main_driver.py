@@ -2,7 +2,7 @@
 # import libraries
 import pygame
 from random import randint as rint
-from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT, FPS
+from constants import SCREEN_SIZE, TILE_SIZE, MAP_WIDTH, MAP_HEIGHT, FPS, RED_TEXT_COLOUR, font_big, font_small
 from player import Player, PlayerSword
 from game_object import GameObject
 from xml_utils import load_xml
@@ -10,6 +10,9 @@ from enemies import Zombie, Enemy
 from entity import Entity
 from math import log2
 import health
+
+
+pygame.font.init()
 
 
 class MainDriver:
@@ -158,4 +161,6 @@ class MainDriver:
             self.parent.state = "game_over"
 
         health.healthbar(self.screen, (128,128,128), (255,0,0), 10, 650, self.player.hp, 100, 20)
+        self.scoreText = font_small.render(str(self.score), True, RED_TEXT_COLOUR, self.screen)
+        self.screen.blit(self.scoreText, (10,10))
 

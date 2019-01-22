@@ -1,17 +1,10 @@
 import pygame
-from constants import SCREEN_SIZE, TITLE, REPEAT_DELAY, REPEAT_INTERVAL
+from constants import SCREEN_SIZE, TITLE, REPEAT_DELAY, REPEAT_INTERVAL, TEXT_COLOUR, font_big, font_small
 from main_driver import MainDriver
 
 pygame.font.init()
 
-BACKGROUND = (0, 0, 0)
-BLACK = (0, 0, 0)
-TEXT_COLOUR = (0, 0, 0)
-BUTTON_COLOUR = (100, 0, 110)
-BUTTON_COLOUR_HIGHLIGHT = (120, 72, 124)
 
-font_big = pygame.font.SysFont(None, 100)
-font_small = pygame.font.SysFont(None, 20)
 
 class GameDriver:
     def __init__(self):
@@ -41,5 +34,9 @@ class GameDriver:
             self.gameOverRect.centerx = self.screen.get_rect().centerx
             self.gameOverRect.centery = self.screen.get_rect().centery
             self.screen.blit(self.gameOver, self.gameOverRect)
+
+            self.scoreText = font_small.render("Your score was:", True, TEXT_COLOUR, self.screen)
+            self.screen.blit(self.scoreText, (200,400))
+            self.screen.blit(self.main_driver.scoreText, (480,400))
 
 

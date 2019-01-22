@@ -1,5 +1,6 @@
 # this is where all the constant are stored
-
+import pygame
+pygame.font.init()
 # the tile size for map tiling
 TILE_SIZE = 5
 # frames per second
@@ -21,3 +22,15 @@ TILEY_BUFFER = 10
 MAP_WIDTH = 7
 # map height
 MAP_HEIGHT = 7
+
+TEXT_COLOUR = (0, 0, 0)
+
+RED_TEXT_COLOUR = (139, 0, 0)
+
+
+font_big = pygame.font.SysFont(None, 100)
+
+font_small = pygame.font.SysFont(None, 50)
+
+
+
