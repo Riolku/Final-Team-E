@@ -18,6 +18,7 @@ class GameObject:
             pygame.transform.rotate(orig_image, 180)
         ]
         self.image = orig_image
+        self.exists = True
         self.direction = (0, -1)
         self.active = active
         self.driver = driver
@@ -30,8 +31,10 @@ class GameObject:
         return x_in and y_in
 
     def draw(self) -> None:
-        x = self.x - self.driver.x_offset
-        y = self.y - self.driver.y_offset
+        dx = self.driver.x_offset
+        dy = self.driver.y_offset
+        x = self.x - dx
+        y = self.y - dy
         if self.onscreen():
             self.driver.screen.blit(self.image, (x * TILE_SIZE, y * TILE_SIZE))
 
@@ -63,21 +66,20 @@ class GameObject:
         return self.y
 
     def bottom_edge(self) -> float:
-        if self.direction[1]:
+        if self.direction[0]:
             # They are facing left or right
-            return self.x + self.height
+            return self.y + self.width
         return self.y + self.height
 
-    def inside(self, point : tuple) -> bool:
-        return self.x <= point[0] <= self.x + self.width and self.y <= point[1] <= self.y + self.height
-
     def collides(self, other) -> bool:
-        return any(self.inside(pt) for pt in [
-            (other.bottom_edge(), other.right_edge()),
-            (other.bottom_edge(), other.left_edge()),
-            (other.top_edge(), other.right_edge()),
-            (other.top_edge(), other.left_edge())
-        ])
+        collide_left = max(self.left_edge(), other.left_edge())
+        collide_right = min(self.right_edge(), other.right_edge())
+        collide_top = max(self.top_edge(), other.top_edge())
+        collide_bottom = min(self.bottom_edge(), other.bottom_edge())
+        return collide_left < collide_right and collide_top < collide_bottom
+
+    def destroy(self) -> None:
+        self.exists = False
 
     def activate(self) -> None:
         self.active = True

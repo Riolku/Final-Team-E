@@ -10,7 +10,7 @@ class GameDriver:
         self.events = []
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(TITLE)
-        self.main_driver = MainDriver(self.screen)
+        self.main_driver = MainDriver(self, self.screen)
 
     def add_event(self, ev) -> None:
         self.events.append(ev)

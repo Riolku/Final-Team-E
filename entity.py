@@ -20,9 +20,12 @@ class Entity(GameObject):
     def take_damage(self, dmg : int) -> bool:
         # Subtract from HP if they aren't currently invincible
         if not self.invincible_timer:
-            print("Ow")
             self.hp -= dmg
-            self.invincible_timer = FPS
+            self.invincible_timer = FPS // 2
+
+            if self.hp <= 0:
+                self.destroy()
+
             return True
         return False
 

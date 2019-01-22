@@ -11,7 +11,7 @@ class Enemy(Entity):
         self.stun_time = 0
 
     def deal_damage(self) -> None:
-        self.player.take_damage(self.dmgh)
+        self.player.take_damage(self.dmg)
 
     def tick(self) -> None:
         Entity.tick(self)
@@ -34,8 +34,11 @@ class Enemy(Entity):
 
         if took_damage:
             # Set a stunned timer
-            self.stun_time = FPS
+            self.stun_time = FPS // 2
 
 
 class Zombie(Enemy):
-    pass
+    def tick(self):
+        Enemy.tick(self)
+        if self.collides(self.player):
+            self.deal_damage()

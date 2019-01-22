@@ -8,14 +8,19 @@ from game_object import GameObject
 from xml_utils import load_xml
 from enemies import Zombie, Enemy
 from entity import Entity
+from math import log2
 
 
 class MainDriver:
     # initialize class
-    def __init__(self, screen):
+    def __init__(self, parent, screen):
         # controls how held keys are repeated. The first number is the delay in milliseconds, the second is the interval
         # at which the keys are repeated
         pygame.key.set_repeat(1, 1)
+
+        # Set the parent driver
+        self.parent = parent
+
         # sets screen
         self.screen = screen
         # creates an empty array called events
@@ -61,6 +66,12 @@ class MainDriver:
             self.objects.append(GameObject(self.screen_width, y, w, h, self, image = rock, active = True))
             self.objects.append(GameObject(self.screen_width * (MAP_WIDTH - 1), y, w, h, self, image = rock, active = True))
 
+        # Preload the xml so we can reuse it
+        self.zombie_xml = load_xml("resources/xml/zombie.xml")
+
+        # Set a score value, initially 0
+        self.score = 0
+
     def add_event(self, ev) -> None:
         # appends parameter 'ev' to self.events
         self.events.append(ev)
@@ -71,25 +82,28 @@ class MainDriver:
 
     def spawn_enemies(self) -> None:
         # Roll a dice to see if enemy should spawn
-        # Approximately 1 every 2 seconds
-        dice_roll = rint(1, 2 * FPS)
+        # Use the current score: the more score, the less seconds before an enemy spawns
+        # This variable stores the average number of seconds before a zombie will spawn
+        seconds = -log2(self.score + 1) / log2(6) + 2.4
+
+        # Roll the dice
+        dice_roll = rint(1, max(FPS // 5, int(seconds * FPS)))
         # if dice roll is not equal to 1, end
         if dice_roll != 1:
             return
-        # for testing purposes
-        print("Enemy spawned")
+
         # Spawn an enemy at random location
         x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
         y = rint(0, (MAP_HEIGHT - 1) * self.screen_height)
-        e = Zombie(x, y, load_xml("resources/xml/zombie.xml"), self, image = self.zombie_img)
+        e = Zombie(x, y, self.zombie_xml, self, image = self.zombie_img)
+        # Make sure they aren't on screen
+        # If they were on screen, an enemy would just "pop" into existence
         while e.onscreen():
             x = rint(0, (MAP_WIDTH - 1) * self.screen_width)
             y = rint(0, (MAP_HEIGHT - 1) * self.screen_height)
-        e.set_pos(x, y)
+            e.set_pos(x, y)
         e.activate()
         self.objects.append(e)
-
-
 
     def tick(self) -> None:
         self.spawn_enemies()
@@ -106,14 +120,14 @@ class MainDriver:
             if not o.active:
                 continue
 
-            if not o.onscreen() and not isinstance(o, Entity):
+            if not isinstance(o, Entity):
                 continue
 
             old_x = o.x
             old_y = o.y
             o.tick()
             for o2 in self.objects:
-                if o != o2 and o2.active and (o.collides(o2) or o2.collides(o)):
+                if o != o2 and o2.active and o.collides(o2):
                     o.set_pos(old_x, old_y)
                     break
             else:
@@ -123,11 +137,21 @@ class MainDriver:
                     self.x_offset += dx
                     self.y_offset += dy
 
+        new_objects = []
         for o in self.objects:
             if isinstance(o, Enemy):
-                if (o.collides(self.player.sword) or self.player.sword.collides(o)) and self.player.sword.active:
+                if self.player.sword.active and o.collides(self.player.sword):
                     self.player.sword.deal_damage(o)
+                    if not o.exists:
+                        self.score += 1
+                        continue
+
+            new_objects.append(o)
 
             if o.active:
                 o.draw()
 
+        self.objects = new_objects
+
+        if not self.player.exists:
+            self.parent.state = "game_over"

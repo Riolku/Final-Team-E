@@ -9,10 +9,7 @@ class Player(Entity):
         Entity.__init__(self, x, y, xml_data, driver)
         self.sword = PlayerSword(self, xml_data.find('sword'), driver)
         self.driver.objects.append(self.sword)
-        self.sword_tick = 0
-
-    def use_sword(self):
-        self.sword_tick = FPS // 3
+        self.using_sword = False
 
     def tick(self):
         Entity.tick(self)
@@ -31,18 +28,19 @@ class Player(Entity):
                 elif ev.key == pygame.K_s:
                     self.move(0, 1)
                     self.set_direction((0, 1))
-            if ev.type == pygame.MOUSEBUTTONDOWN:
-                self.use_sword()
 
-        if self.sword_tick:
-            self.sword_tick -= 1
-            if self.sword_tick == 0:
+            if ev.type == pygame.MOUSEBUTTONUP:
+                self.using_sword = False
                 self.sword.deactivate()
-            else:
-                self.sword.use()
+
+            elif ev.type == pygame.MOUSEBUTTONDOWN:
+                self.using_sword = True
+
+        if self.using_sword:
+            self.sword.use()
 
     def move(self, dx : float, dy : float) -> None:
-        if not self.sword_tick:
+        if not self.using_sword:
             Entity.move(self, dx, dy)
 
 
