@@ -9,6 +9,7 @@ from xml_utils import load_xml
 from enemies import Zombie, Enemy
 from entity import Entity
 from math import log2
+import health
 
 
 class MainDriver:
@@ -155,3 +156,6 @@ class MainDriver:
 
         if not self.player.exists:
             self.parent.state = "game_over"
+
+        health.healthbar(self.screen, (128,128,128), (255,0,0), 10, 650, self.player.hp, 100, 20)
+
