@@ -1,6 +1,7 @@
 import pygame
 from constants import SCREEN_SIZE, TITLE, REPEAT_DELAY, REPEAT_INTERVAL
 from main_driver import MainDriver
+import game_over_screen
 
 class GameDriver:
     def __init__(self):
@@ -8,6 +9,7 @@ class GameDriver:
         # TODO: Start in init state
         self.state = "main"
         self.events = []
+        self.gameOver = game_over_screen.Game_Over()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(TITLE)
         self.main_driver = MainDriver(self, self.screen)
@@ -24,3 +26,9 @@ class GameDriver:
     def tick(self) -> None:
         if self.state == "main":
             self.main_driver.tick()
+        elif self.state == "game_over":
+            self.screen.blit(self.gameOver.gameOver)
+            self.screen.blit(self.gameOver.gameOverRect)
+
+
+

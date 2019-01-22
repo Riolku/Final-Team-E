@@ -1,10 +1,12 @@
 import pygame
 from game_driver import GameDriver
 from constants import FPS
+import start_screen
 
 pygame.init()
 
 driver = GameDriver()
+start_screen.game_intro()
 
 run = True
 while run:
