@@ -51,6 +51,7 @@ class Enemy(Entity):
             self.stun_time = FPS // 3
 
 
+# Zombie enemy class
 class Zombie(Enemy):
     def tick(self):
         Enemy.tick(self)

@@ -55,10 +55,10 @@ def game_intro(): #while game intro is on this is what's going happen
                     quit()
 
         gameDisplay.fill(white) # background color is white
-        text("Dungeon Escape", green, -50, -100, "medium") #messages to user on the start screen
+        text("Zombie Survival", green, -50, -100, "medium") #messages to user on the start screen
         text("How long can you survive?", black, -50, -30)
-        text("Kill as many enemies as possible...", black, -50, 10)
-        text("...and don't get killed!", black, -50, 50)
+        text("Kill as many enemies as possible.", black, -50, 10)
+        text("Use WASD to move and click to use your sword", black, -50, 50)
         text("Press C to Play or Q to Quit", black, -50, 180) # instructions to start or end the game
 
         pygame.display.update() # updates the screen

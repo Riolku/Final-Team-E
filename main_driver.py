@@ -75,6 +75,7 @@ class MainDriver:
 
         # Set a score value, initially 0
         self.score = 0
+        self.scoreText = font_small.render(str(self.score), True, RED_TEXT_COLOUR, self.screen)
 
     def add_event(self, ev) -> None:
         # appends parameter 'ev' to self.events
@@ -102,15 +103,21 @@ class MainDriver:
         e = Zombie(x, y, self.zombie_xml, self, image = self.zombie_img)
         # Make sure they aren't on screen
         # If they were on screen, an enemy would just "pop" into existence
-        while e.onscreen():
-            x = rint(MAP_WIDTH, (MAP_WIDTH - 2) * self.screen_width)
-            y = rint(MAP_HEIGHT, (MAP_HEIGHT - 2) * self.screen_height)
+        # Also make sure they don't currently collide with anything
+        while e.onscreen() or any(e.collides(o) for o in self.objects):
+            x = rint(2 * self.screen_width, (MAP_WIDTH - 2) * self.screen_width)
+            y = rint(2 * self.screen_height, (MAP_HEIGHT - 2) * self.screen_height)
             e.set_pos(x, y)
+
+        # Activate the enemy and add it to the objects array
         e.activate()
         self.objects.append(e)
 
     def tick(self) -> None:
+        # Spawn enemies
         self.spawn_enemies()
+
+        # Draw the background
         for tilex in range(MAP_WIDTH):
             for tiley in range(MAP_HEIGHT):
                 x = (self.screen_width * tilex - self.x_offset)
@@ -120,46 +127,59 @@ class MainDriver:
                     (0 <= y < self.screen_height or 0 <= y + self.screen_height < self.screen_height):
                     self.screen.blit(self.background, (x * TILE_SIZE, y * TILE_SIZE))
 
+        # Tick all the objects
         for o in self.objects:
+            # Dont tick inactive objects
             if not o.active:
                 continue
 
+            # Dont tick non-entities
             if not isinstance(o, Entity):
                 continue
 
+            # Store old position
             old_x = o.x
             old_y = o.y
             o.tick()
+            # Make sure their new position does not collide with anything
             for o2 in self.objects:
                 if o != o2 and o2.active and o.collides(o2):
                     o.set_pos(old_x, old_y)
                     break
             else:
+                # Move the offset so the camera can move
                 if isinstance(o, Player):
                     dx = o.x - old_x
                     dy = o.y - old_y
                     self.x_offset += dx
                     self.y_offset += dy
 
+        # Get the new objects
         new_objects = []
         for o in self.objects:
             if isinstance(o, Enemy):
                 if self.player.sword.active and o.collides(self.player.sword):
                     self.player.sword.deal_damage(o)
+                    # If the enemy died, increase score and dont add it to the new objects
                     if not o.exists:
                         self.score += 1
                         continue
 
+            # Add to new objects
             new_objects.append(o)
 
+            # Draw the object
             if o.active:
                 o.draw()
 
+        # Assign the new objects
         self.objects = new_objects
 
+        # If the player died, its game over
         if not self.player.exists:
             self.parent.state = "game_over"
 
+        # Draw health and score
         health.healthbar(self.screen, (128,128,128), (255,0,0), 10, 650, self.player.hp, 100, 20)
         self.scoreText = font_small.render(str(self.score), True, RED_TEXT_COLOUR, self.screen)
         self.screen.blit(self.scoreText, (10,10))
